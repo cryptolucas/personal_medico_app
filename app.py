@@ -11,7 +11,7 @@ db = client.get_default_database()
 
 
 # Ruta principal (carga plantilla HTML)
-@app.route("/")
+@app.route("/personal/")
 def home():
     return render_template("index.html")
 
