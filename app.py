@@ -15,7 +15,7 @@ db = client.get_default_database()
 def home():
     return render_template("index.html")
 
-@app.route('/health', methods=['GET'])
+@app.route('/health-check/', methods=['GET'])
 def health_check():
     # Aquí puedes agregar lógica para verificar la salud de tu app
     # Por ejemplo, verificar si puedes conectar a una base de datos
