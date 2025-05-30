@@ -28,7 +28,7 @@ def health_check():
         return f"Error: {str(e)}", 500
 
 # Ruta para insertar datos
-@app.route("/insertar", methods=["POST"])
+@app.route("/personal/insertar", methods=["POST"])
 def insertar():
     data = request.json
 
@@ -40,7 +40,7 @@ def insertar():
 
 
 # Ruta para listar datos
-@app.route("/listar", methods=["GET"])
+@app.route("/personal/listar", methods=["GET"])
 def listar():
     documentos = list(db.usuarios.find({}, {"_id": 0}))
     return jsonify(documentos)

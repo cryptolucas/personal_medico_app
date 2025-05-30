@@ -45,7 +45,7 @@
     const data = {};
     formData.forEach((value, key) => data[key] = value);
 
-    const response = await fetch('/insertar', {
+    const response = await fetch('/personal/insertar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -58,7 +58,7 @@
 
   // Función para listar usuarios y mostrarlos
   document.getElementById('listar-usuarios').addEventListener('click', async () => {
-    const response = await fetch('/listar');
+    const response = await fetch('/personal/listar');
     const usuarios = await response.json();
 
     const contenedor = document.getElementById('lista-usuarios');
