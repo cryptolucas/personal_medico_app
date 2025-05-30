@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Personal Medico Epilepsia APP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Bienvenido a Personal Medico Epilepsia APP</h1>
+
+    <!-- Botón para listar usuarios -->
+    <button id="listar-usuarios">Listar todos los usuarios</button>
+
+    
+
+    <form id="insertar-form" style="margin-top: 40px;">
+        <input type="text" name="nombre_completo" placeholder="Nombre completo" required>
+        <input type="text" name="documento_identidad" placeholder="Documento de identidad" required>
+        <input type="email" name="email" placeholder="Correo electrónico" required>
+        <input type="tel" name="telefono" placeholder="Teléfono" required>
+  
+        <label for="tipo">Tipo:</label>
+        <select name="tipo" id="tipo" required>
+            <option value="">--Seleccione tipo--</option>
+            <option value="medico">Médico</option>
+            <option value="enfermero">Enfermero</option>
+            <option value="tecnico">Técnico</option>
+        </select>
+
+        <input type="text" name="especialidad" placeholder="Especialidad (opcional)">
+        <input type="text" name="registro_profesional" placeholder="Registro profesional (opcional)">
+        <input type="date" name="fecha_ingreso" placeholder="Fecha de ingreso" required>
+        <button type="submit">Insertar</button>
+    </form>
+
+    <!-- Contenedor donde se mostrarán los usuarios -->
+    <div id="lista-usuarios" style="margin-top: 20px;"></div>
+
+<script>
+  // Función para insertar usuario
+  const form = document.getElementById('insertar-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = {};
+    formData.forEach((value, key) => data[key] = value);
+
+    const response = await fetch('/insertar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+    alert('Insertado con ID: ' + result.inserted_id);
+    form.reset();
+  });
+
+  // Función para listar usuarios y mostrarlos
+  document.getElementById('listar-usuarios').addEventListener('click', async () => {
+    const response = await fetch('/listar');
+    const usuarios = await response.json();
+
+    const contenedor = document.getElementById('lista-usuarios');
+    if (usuarios.length === 0) {
+      contenedor.innerHTML = '<p>No hay usuarios registrados.</p>';
+      return;
+    }
+
+    // Crear tabla con usuarios
+    let html = '<table border="1" cellpadding="5" cellspacing="0"><thead><tr>';
+    html += '<th>Nombre completo</th><th>Documento</th><th>Email</th><th>Teléfono</th><th>Tipo</th><th>Especialidad</th><th>Registro</th><th>Fecha de ingreso</th>';
+    html += '</tr></thead><tbody>';
+
+    usuarios.forEach(user => {
+      html += '<tr>';
+      html += `<td>${user.nombre_completo || ''}</td>`;
+      html += `<td>${user.documento_identidad || ''}</td>`;
+      html += `<td>${user.email || ''}</td>`;
+      html += `<td>${user.telefono || ''}</td>`;
+      html += `<td>${user.tipo || ''}</td>`;
+      html += `<td>${user.especialidad || ''}</td>`;
+      html += `<td>${user.registro_profesional || ''}</td>`;
+      html += `<td>${user.fecha_ingreso || ''}</td>`;
+      html += '</tr>';
+    });
+
+    html += '</tbody></table>';
+    contenedor.innerHTML = html;
+  });
+</script>
+
+</body>
+</html>
