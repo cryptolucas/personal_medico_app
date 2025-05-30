@@ -15,6 +15,18 @@ db = client.get_default_database()
 def home():
     return render_template("index.html")
 
+@app.route('/health', methods=['GET'])
+def health_check():
+    # Aquí puedes agregar lógica para verificar la salud de tu app
+    # Por ejemplo, verificar si puedes conectar a una base de datos
+    try:
+        # Ejemplo: Simula una verificación (puedes agregar más lógica)
+        # Si todo está bien, devuelve un 200
+        return "OK", 200
+    except Exception as e:
+        # Si hay un error, devuelve un código de error (por ejemplo, 500)
+        return f"Error: {str(e)}", 500
+
 # Ruta para insertar datos
 @app.route("/insertar", methods=["POST"])
 def insertar():
